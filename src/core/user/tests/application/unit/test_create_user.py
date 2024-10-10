@@ -6,7 +6,7 @@ from src.core.user.domain.user_repository import UserRepository
 import pytest
 
 @pytest.mark.user
-class TestCreateCateory:
+class TestCreateUser:
     def test_create_user_with_valid_data(self):
         mock_repository = MagicMock(UserRepository)
         use_case = CreateUser(repository=mock_repository)
