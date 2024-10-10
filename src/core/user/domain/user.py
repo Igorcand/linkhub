@@ -53,3 +53,8 @@ class User():
         self.qnt_room = qnt_room 
 
         self.validate()
+    
+    def update_username(self, username):
+        self.username = username 
+
+        self.validate()
