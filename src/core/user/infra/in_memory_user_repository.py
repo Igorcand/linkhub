@@ -15,6 +15,12 @@ class InMemoryUserRepository(UserRepository):
                 return user
         return None
     
+    def get_by_username(self, username: str) -> User | None:
+        for user in self.users:
+            if user.username == username:
+                return user
+        return None
+    
     def delete(self, id: UUID) -> None:
         user = self.get_by_id(id)
         self.users.remove(user)

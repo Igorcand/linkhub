@@ -10,6 +10,10 @@ class UserRepository(ABC):
     @abstractmethod
     def get_by_id(self, id: UUID) -> User | None:
         raise NotImplementedError
+    
+    @abstractmethod
+    def get_by_username(self, username: str) -> User | None:
+        raise NotImplementedError
 
     @abstractmethod
     def delete(self, id: UUID) -> None:
