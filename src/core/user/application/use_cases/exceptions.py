@@ -1,0 +1,2 @@
+class InvalidUserData(Exception):
+    pass
