@@ -33,3 +33,4 @@ class InMemoryUserRepository(UserRepository):
     
     def list(self) -> list[User]:
         return [user for user in self.users]
+ 
