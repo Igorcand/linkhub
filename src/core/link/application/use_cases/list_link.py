@@ -19,6 +19,7 @@ class ListLink:
         id: UUID
         url: str
         user_id: UUID
+        is_valid: bool
         
     @dataclass
     class ListLinkResponse():
@@ -35,6 +36,7 @@ class ListLink:
                     id=link.id,
                     url=link.url,
                     user_id=link.user_id,
+                    is_valid=link.is_valid
                 ) for link in links
             ]
 

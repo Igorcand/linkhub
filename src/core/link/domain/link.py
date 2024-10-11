@@ -5,6 +5,7 @@ from uuid import UUID, uuid4
 class Link():
     user_id : UUID
     url : str
+    is_valid : bool = False
     id: UUID = field(default_factory=uuid4)
 
     def __post_init__(self):
