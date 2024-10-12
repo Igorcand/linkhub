@@ -3,7 +3,7 @@ from uuid import UUID, uuid4
 from src.core.link.domain.link import Link
 
 @pytest.mark.link
-class TestUser:
+class TestLink:
     def test_field_is_required(self):
         with pytest.raises(TypeError):
             Link()
