@@ -18,7 +18,10 @@ class Link():
         if len(self.url) > 255:
             raise ValueError("url cannot be longer than 255")
         
-    
+    def activate(self):
+        self.is_active = True
+        self.validate()
+
     def __str__(self):
         return f"{self.url} - {self.user_id}"
     
