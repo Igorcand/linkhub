@@ -1,9 +1,9 @@
 from unittest.mock import create_autospec
-from src.core.link.application.use_cases.list_link import ListLink
-from src.core._shered.domain.pagination import ListOutputMeta
+from src.core.link.application.use_cases.list_link import ListLink, LinkOutput
 from src.core.link.domain.link_repository import LinkRepository
 from src.core.link.domain.link import Link
 import pytest
+from uuid import uuid4
 
 @pytest.mark.link
 class TestListLink:
@@ -12,12 +12,10 @@ class TestListLink:
         mock_repository.list.return_value = []
 
         use_case = ListLink(repository=mock_repository)
-        request = ListLinkRequest()
         response = use_case.execute(ListLink.Input())
 
-        assert response == ListLinkResponse(
-            data=[],
-            meta = []
+        assert response == ListLink.Output(
+            data=[]
             )
     
     def test_when_categories_in_repository_then_return_list(self):
@@ -31,14 +29,14 @@ class TestListLink:
         use_case = ListLink(repository=mock_repository)
         response = use_case.execute(ListLink.Input())
 
-        assert response == ListLinkResponse(
+        assert response == ListLink.Output(
             data=[
-                ListLink.Output(
+                LinkOutput(
                     id=link.id,
                     url=link.url,
-                    user_id=link.user_id
+                    user_id=link.user_id,
+                    is_valid=link.is_valid
                 ),
-            ],
-            meta = []
+            ]
         )
     

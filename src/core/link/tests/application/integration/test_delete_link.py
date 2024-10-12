@@ -12,15 +12,15 @@ from src.core.link.infra.in_memory_link_repository import InMemoryLinkRepository
 class TestDeleteLink:
     def test_delete_link_from_repository(self):
         link = Link(
-            url="www.google.com",
-            user_id = uuid4()
+            url="www.google.com", 
+            user_id=uuid4(), 
         )
         repository = InMemoryLinkRepository(links=[link])
 
-        use_case = DeleteLink(repository)
-        use_case.execute(DeleteLink.Input(id=link.id))
+        use_case = DeleteLink(repository=repository)
+        request = use_case.execute(DeleteLink.Input(id=link.id))
 
-        assert repository.get_by_id(user.id) is None
+        assert repository.get_by_id(link.id) is None
         assert request is None
 
     def test_when_link_not_found_then_raise_exception(self):

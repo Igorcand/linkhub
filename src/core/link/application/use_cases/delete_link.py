@@ -17,5 +17,4 @@ class DeleteLink:
         link = self.repository.get_by_id(input.id)
         if link is None:
             raise LinkNotFound(f"Link with {input.id} not found")
-        
-        self.repository.delete(link)
+        self.repository.delete(link.id)
