@@ -18,17 +18,17 @@ class TestRoom:
             Room(user_id=uuid4(), name='')
 
 
-    def test_user_is_created_with_provided_values(self):
+    def test_room_is_created_with_provided_values(self):
         id = uuid4()
         user_id = uuid4()
 
-        user = Room(
+        room = Room(
             id=id, 
             name="Study Room",
             user_id=user_id 
             )
         
-        assert user.id == id
-        assert user.name == "Study Room"
-        assert user.user_id == user_id
+        assert room.id == id
+        assert room.name == "Study Room"
+        assert room.user_id == user_id
 
