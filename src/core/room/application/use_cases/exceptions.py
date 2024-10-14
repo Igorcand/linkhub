@@ -3,3 +3,9 @@ class InvalidRoomData(Exception):
 
 class RoomNotFound(Exception):
     pass
+
+class RoomLimitReached(Exception):
+    pass
+
+class RoomInsufficient(Exception):
+    pass

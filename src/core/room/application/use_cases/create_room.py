@@ -1,6 +1,6 @@
 from uuid import UUID
 from dataclasses import dataclass
-from src.core.room.application.use_cases.exceptions import InvalidRoomData
+from src.core.room.application.use_cases.exceptions import InvalidRoomData, RoomLimitReached
 from src.core.user.application.use_cases.exceptions import UserNotFound
 from src.core.room.domain.room_repository import RoomRepository
 from src.core.user.domain.user_repository import UserRepository
@@ -27,6 +27,15 @@ class CreateRoom:
         if user is None:
             raise UserNotFound(f"User with {input.user_id} not found")
         
+        user.qnt_room += 1
+        try:
+            user.validate()
+        except ValueError as e:
+            if str(e) == "qnt_room cannot be bigger than 5":
+                raise RoomLimitReached(e)
+            raise InvalidRoomData(e)
+
+        self.user_repository.update(user)
         try:
             room = Room(
                 name = input.name,
