@@ -22,4 +22,9 @@ class Room():
     
     def __repr__(self) -> str:
         return f"Room ({self.id})"
+    
+    def update_name(self, name):
+        self.name = name 
+
+        self.validate()
 

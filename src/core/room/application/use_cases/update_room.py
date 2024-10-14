@@ -29,5 +29,5 @@ class UpdateRoom:
             raise InvalidRoomData(err)
     
         
-        self.repository.update(room.id)
+        self.repository.update(room)
     
