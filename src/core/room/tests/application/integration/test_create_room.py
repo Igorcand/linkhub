@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock
 from uuid import UUID, uuid4
 from src.core.room.application.use_cases.create_room import CreateRoom
-from src.core.room.application.use_cases.exceptions import InvalidRoomData
+from src.core.room.application.use_cases.exceptions import InvalidRoomData, RoomLimitReached
 from src.core.user.application.use_cases.exceptions import UserNotFound
 
 from src.core.room.domain.room_repository import RoomRepository
@@ -52,4 +52,26 @@ class TestCreateRoom:
             user_id=uuid4()
             )
         with pytest.raises(UserNotFound) as exc_info:
+            response = use_case.execute(request)
+    
+    def test_create_room_with_limit_room_reached(self):
+        repository = InMemoryRoomRepository()
+
+        user = User(
+            id=uuid4(),
+            name="Teste", 
+            username="Teste123", 
+            email="test@ulife.com.br", 
+            password='123test*', 
+            qnt_room=5
+            )
+        
+        user_repository = InMemoryUserRepository(users=[user])
+        use_case = CreateRoom(repository=repository, user_repository=user_repository)
+        request = CreateRoom.Input(
+            name="Study Room", 
+            user_id=user.id
+            )
+
+        with pytest.raises(RoomLimitReached, match="qnt_room cannot be bigger than 5") as exc_info:
             response = use_case.execute(request)
