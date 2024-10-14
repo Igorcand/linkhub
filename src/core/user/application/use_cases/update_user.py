@@ -10,7 +10,7 @@ class UpdateUser:
     class Input:
         id: UUID
         qnt_room: int | None = None
-        username: int | None = None
+        username: str | None = None
 
 
     def __init__(self, repository: UserRepository) -> None:
