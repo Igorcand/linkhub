@@ -3,3 +3,6 @@ class InvalidPostData(Exception):
 
 class PostLimitReached(Exception):
     pass
+
+class PostNotFound(Exception):
+    pass
