@@ -21,6 +21,13 @@ class InMemoryPostRepository(PostRepository):
                 return post
         return None
     
+    def list_by_room_id(self, room_id: UUID) -> Post | None:
+        posts_by_room = []
+        for post in self.posts:
+            if post.room_id == room_id:
+                posts_by_room.append(post)
+        return posts_by_room
+    
     def delete(self, id: UUID) -> None:
         post = self.get_by_id(id)
         self.posts.remove(post)

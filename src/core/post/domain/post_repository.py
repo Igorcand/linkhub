@@ -14,6 +14,10 @@ class PostRepository(ABC):
     @abstractmethod
     def get_by_user_id(self, user_id: UUID) -> Post | None:
         raise NotImplementedError
+    
+    @abstractmethod
+    def list_by_room_id(self, room_id: UUID) -> Post | None:
+        raise NotImplementedError
 
     @abstractmethod
     def delete(self, id: UUID) -> None:
