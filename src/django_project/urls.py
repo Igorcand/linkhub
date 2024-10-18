@@ -16,7 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenRefreshView
+
+from src.django_project.user_app.views import UserRegisterViewSet, UserLoginViewSet
+
+router = DefaultRouter()
+router.register(r"api/register", UserRegisterViewSet, basename="register")
+router.register(r"api/login", UserLoginViewSet, basename="login")
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh')
+] + router.urls
