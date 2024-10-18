@@ -31,20 +31,15 @@ class DjangoORMUserRepository(UserRepository):
             return None
 
     def get_by_username(self, username: str) -> Optional[User]:
-        return User.objects.filter(username=username).first()
+        return UserORM.objects.filter(username=username).first()
 
     def delete(self, id: UUID) -> None:
         return self.model.objects.filter(id=id).delete()
 
     def update(self, user: User) -> None:
-        existing_user = self.get_by_id(user.id)
-        if existing_user:
-            existing_user.name = user.name
-            existing_user.username = user.username
-            existing_user.email = user.email
-            existing_user.qnt_room = user.qnt_room
-            existing_user.password = user.password 
-            existing_user.save()
+        self.model.objects.filter(pk=user.id).update(
+            username=user.username,
+        )
 
     def list(self) -> List[User]:
         return [

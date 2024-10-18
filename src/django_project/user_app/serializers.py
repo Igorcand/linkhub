@@ -16,3 +16,10 @@ class LoginRequestSerializer(serializers.Serializer):
 class LoginResponseSerializer(serializers.Serializer):
     refresh = serializers.CharField()
     access = serializers.CharField()
+
+class DeleteUserRequestSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+
+class UpdatePartialUserRequestSerializer(serializers.Serializer):
+    id = serializers.UUIDField(required=False)
+    username = serializers.CharField(max_length=30, allow_blank=False, required=False)
