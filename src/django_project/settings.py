@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_extensions',
     'src.django_project.user_app',
+    'src.django_project.room_app',
 ]
 
 REST_FRAMEWORK = {
