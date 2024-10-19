@@ -22,4 +22,4 @@ class DeleteUserRequestSerializer(serializers.Serializer):
 
 class UpdatePartialUserRequestSerializer(serializers.Serializer):
     id = serializers.UUIDField(required=False)
-    username = serializers.CharField(max_length=30, allow_blank=False, required=False)
+    username = serializers.CharField(max_length=30, allow_blank=False, required=True)

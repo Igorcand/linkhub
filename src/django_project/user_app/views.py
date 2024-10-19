@@ -89,9 +89,6 @@ class UserViewSet(viewsets.ViewSet):
             return Response(data={"error": str(err)}, status=HTTP_400_BAD_REQUEST)
         except UserNotFound as err:
             return Response(data={"error": str(err)}, status=HTTP_404_NOT_FOUND)
-        
-        except UserNotFound:
-            return Response(status=HTTP_404_NOT_FOUND)
 
         return Response(
             status=HTTP_204_NO_CONTENT,
