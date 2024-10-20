@@ -9,13 +9,6 @@ class CreateUserRequestSerializer(serializers.Serializer):
 class CreateUserResponseSerializer(serializers.Serializer):
     id = serializers.UUIDField()
 
-class LoginRequestSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
-    password = serializers.CharField(required=True)
-
-class LoginResponseSerializer(serializers.Serializer):
-    refresh = serializers.CharField()
-    access = serializers.CharField()
 
 class DeleteUserRequestSerializer(serializers.Serializer):
     id = serializers.UUIDField()

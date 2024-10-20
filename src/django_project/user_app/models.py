@@ -1,8 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 import uuid
 from django.contrib.auth.hashers import make_password
 
-class User(models.Model):
+class User(AbstractUser):
     app_label = "user_app"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -11,6 +12,9 @@ class User(models.Model):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
     qnt_room = models.PositiveIntegerField(default=0)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     class Meta:
         db_table = "user"

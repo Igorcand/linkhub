@@ -19,16 +19,21 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from src.django_project.user_app.views import UserRegisterViewSet, UserLoginViewSet, UserViewSet
+from src.django_project.user_app.views import UserRegisterViewSet, UserViewSet
+from src.django_project.auth_app.views import  CustomTokenObtainPairView, CustomTokenRefreshView
+
+from src.django_project.room_app.views import RoomViewSet
+
 
 router = DefaultRouter()
 router.register(r"api/register", UserRegisterViewSet, basename="register")
-router.register(r"api/login", UserLoginViewSet, basename="login")
 router.register(r"api/user", UserViewSet, basename="user")
+router.register(r"api/room", RoomViewSet, basename="room")
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh')
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh')
 ] + router.urls
