@@ -13,13 +13,13 @@ from src.django_project.room_app.repository import DjangoORMRoomRepository
 from src.django_project.room_app.serializers import CreateRoomRequestSerializer, CreateRoomResponseSerializer
 
 from src.core.room.application.use_cases.create_room import CreateRoom
-
+from rest_framework.permissions import IsAuthenticated
 
 class RoomViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
 
     def create(self, request: Request) -> Response:    
-
-
+        user_id = request.user.id
         serializer = CreateRoomRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 

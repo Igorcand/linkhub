@@ -1,5 +1,7 @@
 from src.core.room.domain.room_repository import RoomRepository
 from src.django_project.room_app.models import Room as RoomORM
+from src.django_project.user_app.models import User as UserORM
+
 from src.core.room.domain.room import Room
 from uuid import UUID
 from typing import List, Optional
@@ -9,11 +11,12 @@ class DjangoORMRoomRepository(RoomRepository):
     def __init__(self, model: RoomORM | None = None) -> None:
         self.model = model or RoomORM
 
-    def create(self, room: Room) -> None:    
+    def create(self, room: Room) -> None: 
+        user = UserORM.objects.get(id=room.user_id)   
         room_orm= RoomORM(
             id=room.id,
             name=room.name,
-            room_id = room.user_id,
+            user_id = user,
             )
         room_orm.save()
 

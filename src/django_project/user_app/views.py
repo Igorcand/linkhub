@@ -56,10 +56,6 @@ class UserViewSet(viewsets.ViewSet):
         )
 
     def partial_update(self, request, pk: UUID = None) -> Response:
-        headers = request.headers
-
-        print(f'headers = {headers}')
-
         serializer = UpdatePartialUserRequestSerializer(
             data={
                 **request.data, 
