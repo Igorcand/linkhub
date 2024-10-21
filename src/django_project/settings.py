@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'src.django_project.user_app',
     'src.django_project.room_app',
     'src.django_project.link_app',
+    'src.django_project.post_app',
 
 ]
 
