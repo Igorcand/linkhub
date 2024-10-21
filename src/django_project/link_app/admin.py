@@ -1,3 +1,7 @@
 from django.contrib import admin
+from src.django_project.link_app.models import Link
 
-# Register your models here.
+class LinkAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Link, LinkAdmin)

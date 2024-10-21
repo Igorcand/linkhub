@@ -1,9 +1,7 @@
-from django.shortcuts import render
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_204_NO_CONTENT
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from src.core.room.application.use_cases.exceptions import InvalidRoomData, RoomLimitReached, RoomNotFound, RoomInsufficient
 

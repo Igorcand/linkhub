@@ -23,12 +23,15 @@ from src.django_project.user_app.views import UserRegisterViewSet, UserViewSet
 from src.django_project.auth_app.views import  CustomTokenObtainPairView, CustomTokenRefreshView
 
 from src.django_project.room_app.views import RoomViewSet
+from src.django_project.link_app.views import LinkViewSet
+
 
 
 router = DefaultRouter()
 router.register(r"api/register", UserRegisterViewSet, basename="register")
 router.register(r"api/user", UserViewSet, basename="user")
 router.register(r"api/room", RoomViewSet, basename="room")
+router.register(r"api/link", LinkViewSet, basename="link")
 
 
 
