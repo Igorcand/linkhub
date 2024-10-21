@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'src.django_project.auth_app',
     'src.django_project.user_app',
     'src.django_project.room_app',
+    'src.django_project.link_app',
+
 ]
 
 REST_FRAMEWORK = {
