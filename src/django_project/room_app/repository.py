@@ -54,5 +54,5 @@ class RoomModelMapper:
         return Room(
             id=room.id,
             name=room.name,
-            user_id = room.user_id,
+            user_id = room.user_id.id,
         )

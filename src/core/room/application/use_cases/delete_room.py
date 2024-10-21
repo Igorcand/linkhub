@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from src.core.room.application.use_cases.exceptions import InvalidRoomData, RoomNotFound, RoomInsufficient
 from src.core.room.domain.room_repository import RoomRepository
 from src.core.user.domain.user_repository import UserRepository
+from src.core.user.application.use_cases.exceptions import UserNotFound
 
 
 from src.core.room.domain.room import Room

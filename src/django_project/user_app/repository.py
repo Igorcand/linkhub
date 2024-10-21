@@ -39,6 +39,8 @@ class DjangoORMUserRepository(UserRepository):
     def update(self, user: User) -> None:
         self.model.objects.filter(pk=user.id).update(
             username=user.username,
+            qnt_room=user.qnt_room,
+
         )
 
     def list(self) -> List[User]:
@@ -55,6 +57,7 @@ class UserModelMapper:
             username = user.username,
             email=user.email,
             password=user.password,
+            qnt_room=user.qnt_room
 
         )
     
@@ -65,4 +68,5 @@ class UserModelMapper:
             username = user.username,
             email=user.email,
             password=user.password,
+            qnt_room=user.qnt_room
         )
