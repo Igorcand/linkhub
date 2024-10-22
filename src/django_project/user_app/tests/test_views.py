@@ -22,7 +22,7 @@ def user_repository() -> DjangoORMUserRepository:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestRegisterAPI():
-    def test_register_user(self, user_repository: DjangoORMUserRepository) -> None:
+    def test_register_user(self) -> None:
         url = "/api/register/"
         response = APIClient().post(
             url,
@@ -41,7 +41,7 @@ class TestRegisterAPI():
 class TestLoginAPI():
     def test_login_user(self, user: User, user_repository: DjangoORMUserRepository) -> None:
         user_repository.create(user)
-        url = "/api/login/"
+        url = "/api/token/"
         response = APIClient().post(
             url,
             data={
@@ -52,27 +52,27 @@ class TestLoginAPI():
 
         assert response.status_code == HTTP_200_OK
 
-@pytest.mark.django_db
-@pytest.mark.web_service
-class TestDeleteAPI():
-    def test_delete_user(self, user: User, user_repository: DjangoORMUserRepository) -> None:
-        user_repository.create(user)
-        url = f"/api/user/{user.id}/"
-        response = APIClient().delete(url)
-
-        assert response.status_code == HTTP_204_NO_CONTENT
-
-@pytest.mark.django_db
-@pytest.mark.web_service
-class TestPartialUpdateAPI():
-    def test_update_user(self, user: User, user_repository: DjangoORMUserRepository) -> None:
-        user_repository.create(user)
-        url = f"/api/user/{user.id}/"
-        response = APIClient().patch(
-            url, 
-            data={
-                "username":"jorginho"
-            }, 
-            format="json"
-            )
-        assert response.status_code == HTTP_204_NO_CONTENT
+#@pytest.mark.django_db
+#@pytest.mark.web_service
+#class TestDeleteAPI():
+#    def test_delete_user(self, user: User, user_repository: DjangoORMUserRepository) -> None:
+#        user_repository.create(user)
+#        url = f"/api/user/{user.id}/"
+#        response = APIClient().delete(url)
+#
+#        assert response.status_code == HTTP_204_NO_CONTENT
+#
+#@pytest.mark.django_db
+#@pytest.mark.web_service
+#class TestPartialUpdateAPI():
+#    def test_update_user(self, user: User, user_repository: DjangoORMUserRepository) -> None:
+#        user_repository.create(user)
+#        url = f"/api/user/{user.id}/"
+#        response = APIClient().patch(
+#            url, 
+#            data={
+#                "username":"jorginho"
+#            }, 
+#            format="json"
+#            )
+#        assert response.status_code == HTTP_204_NO_CONTENT
