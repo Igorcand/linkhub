@@ -24,6 +24,7 @@ from src.django_project.auth_app.views import  CustomTokenObtainPairView, Custom
 
 from src.django_project.room_app.views import RoomViewSet
 from src.django_project.link_app.views import LinkViewSet
+from src.django_project.post_app.views import PostViewSet
 
 
 
@@ -32,6 +33,7 @@ router.register(r"api/register", UserRegisterViewSet, basename="register")
 router.register(r"api/user", UserViewSet, basename="user")
 router.register(r"api/room", RoomViewSet, basename="room")
 router.register(r"api/link", LinkViewSet, basename="link")
+router.register(r"api/post", PostViewSet, basename="post")
 
 
 
