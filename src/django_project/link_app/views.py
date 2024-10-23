@@ -51,8 +51,9 @@ class LinkViewSet(viewsets.ViewSet):
         )
     
     def list(self, request: Request) -> Response:
+        user_id = request.user.id
         use_case = ListLink(repository=DjangoORMLinkRepository())
-        output = use_case.execute(ListLink.Input())
+        output = use_case.execute(ListLink.Input(user_id=user_id))
         serializer = ListLinkResponseSerializer(instance=output)
         return Response(status=HTTP_200_OK, data=serializer.data)
     

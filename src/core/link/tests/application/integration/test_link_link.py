@@ -12,21 +12,22 @@ class TestListLink:
         repository = InMemoryLinkRepository()
 
         use_case = ListLink(repository=repository)
-        response = use_case.execute(ListLink.Input())
+        response = use_case.execute(ListLink.Input(user_id=uuid4()))
 
         assert response == ListLink.Output(
             data=[]
             )
     
     def test_when_categories_in_repository_then_return_list(self):
+        user_id = uuid4()
         link = Link(
             url="www.google.com", 
-            user_id=uuid4(), 
+            user_id=user_id, 
         )
         repository = InMemoryLinkRepository(links=[link])
 
         use_case = ListLink(repository=repository)
-        response = use_case.execute(ListLink.Input())
+        response = use_case.execute(ListLink.Input(user_id=user_id))
 
         assert response == ListLink.Output(
             data=[

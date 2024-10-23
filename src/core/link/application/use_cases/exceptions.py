@@ -4,5 +4,5 @@ class InvalidLinkData(Exception):
 class LinkNotFound(Exception):
     pass
 
-class RelatedLinksNotFound(Exception):
+class RelatedLinksNotFoundForUser(Exception):
     pass

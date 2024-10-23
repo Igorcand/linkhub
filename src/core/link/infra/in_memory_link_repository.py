@@ -19,5 +19,9 @@ class InMemoryLinkRepository(LinkRepository):
         link = self.get_by_id(id)
         self.links.remove(link)
     
-    def list(self) -> list[Link]:
-        return [link for link in self.links]
+    def list(self, user_id: UUID) -> list[Link]:
+        links = []
+        for link in self.links:
+            if link.user_id == user_id:
+                links.append(link)
+        return links

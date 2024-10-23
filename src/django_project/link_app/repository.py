@@ -30,10 +30,11 @@ class DjangoORMLinkRepository(LinkRepository):
     def delete(self, id: UUID) -> None:
         return self.model.objects.filter(id=id).delete()
 
-    def list(self) -> List[Link]:
+    def list(self, user_id: UUID) -> List[Link]:
+        links = LinkORM.objects.filter(user_id=user_id)
         return [
             LinkModelMapper.to_entity(link_model)
-            for link_model in self.model.objects.all()]
+            for link_model in links]
 
 class LinkModelMapper:
     @staticmethod

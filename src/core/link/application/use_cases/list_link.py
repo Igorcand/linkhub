@@ -15,7 +15,7 @@ class ListLink:
 
     @dataclass
     class Input:
-        pass
+        user_id: UUID
         
     @dataclass
     class Output:
@@ -25,7 +25,7 @@ class ListLink:
         self.repository = repository
 
     def execute(self, request: Input) -> Output:
-        links = self.repository.list()
+        links = self.repository.list(user_id=request.user_id)
 
         return self.Output(data = [
                 LinkOutput(

@@ -16,5 +16,5 @@ class LinkRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def list(self) -> list[Link]:
+    def list(self, user_id: UUID) -> list[Link]:
         raise NotImplementedError

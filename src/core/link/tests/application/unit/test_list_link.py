@@ -12,22 +12,25 @@ class TestListLink:
         mock_repository.list.return_value = []
 
         use_case = ListLink(repository=mock_repository)
-        response = use_case.execute(ListLink.Input())
+        input = ListLink.Input(user_id=uuid4())
+        response = use_case.execute(input)
 
         assert response == ListLink.Output(
             data=[]
             )
     
     def test_when_categories_in_repository_then_return_list(self):
+        user_id = uuid4()
         link = Link(
             url="www.google.com", 
-            user_id=uuid4(), 
+            user_id=user_id, 
         )
         mock_repository = create_autospec(LinkRepository)
         mock_repository.list.return_value = [link]
 
         use_case = ListLink(repository=mock_repository)
-        response = use_case.execute(ListLink.Input())
+        input = ListLink.Input(user_id=user_id)
+        response = use_case.execute(input)
 
         assert response == ListLink.Output(
             data=[
