@@ -12,7 +12,7 @@ class PostRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    def get_by_user_id(self, user_id: UUID) -> Post | None:
+    def validate_if_user_id_has_post_in_room_id(self, user_id: UUID) -> list[Post] | None:
         raise NotImplementedError
     
     @abstractmethod
@@ -23,10 +23,4 @@ class PostRepository(ABC):
     def delete(self, id: UUID) -> None:
         raise NotImplementedError
 
-    @abstractmethod
-    def update(self, post: Post) -> None:
-        raise NotImplementedError
 
-    @abstractmethod
-    def list(self) -> list[Post]:
-        raise NotImplementedError

@@ -4,7 +4,7 @@ from src.core.post.application.use_cases.exceptions import InvalidPostData, Post
 from src.core.user.application.use_cases.exceptions import UserNotFound
 from src.core.room.application.use_cases.exceptions import RoomNotFound
 from src.core.user.application.use_cases.exceptions import UserNotFound
-from src.core.link.application.use_cases.exceptions import RelatedLinksNotFound
+from src.core.link.application.use_cases.exceptions import RelatedLinksNotFoundForUser
 
 
 from src.core.room.domain.room_repository import RoomRepository
@@ -16,7 +16,7 @@ from src.core.link.domain.link_repository import LinkRepository
 from src.core.post.domain.post import Post
 
 class CreatePost:
-    def __init__(self, repository: RoomRepository, user_repository: UserRepository, room_repository: RoomRepository, link_repository: LinkRepository) -> None:
+    def __init__(self, repository: PostRepository, user_repository: UserRepository, room_repository: RoomRepository, link_repository: LinkRepository) -> None:
         self.repository = repository
         self.user_repository = user_repository
         self.room_repository = room_repository
@@ -38,22 +38,23 @@ class CreatePost:
 
 
     def execute(self, input: Input):
-        user = self.user_repository.get_by_id(input.user_id)
+        user = self.user_repository.get_by_id(id=input.user_id)
         if user is None:
             raise UserNotFound(f"User with {input.user_id} not found")
         
-        room = self.room_repository.get_by_id(input.room_id)
+        room = self.room_repository.get_by_id(id=input.room_id)
         if room is None:
             raise RoomNotFound(f"Room with {input.room_id} not found")
         
-        links_ids = {link.id for link in self.link_repository.list()}
+        links_ids = {link.id for link in self.link_repository.list(user_id=input.user_id)}
         if not input.links.issubset(links_ids):
-            raise RelatedLinksNotFound(
+            raise RelatedLinksNotFoundForUser(
                 f"Links not found: {input.links - links_ids}"
             )
         
-        post = self.repository.get_by_user_id(input.user_id)
-        if post is not None:
+        exist_post = self.repository.validate_if_user_id_has_post_in_room_id(user_id=input.user_id, room_id=input.room_id)
+
+        if exist_post is True:
             raise PostLimitReached(f"User with {input.user_id} already has some post in the room {input.room_id}")
         
         try:

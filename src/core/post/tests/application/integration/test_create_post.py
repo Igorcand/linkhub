@@ -4,7 +4,7 @@ from src.core.post.application.use_cases.create_post import CreatePost
 
 from src.core.room.application.use_cases.exceptions import InvalidRoomData, RoomNotFound
 from src.core.user.application.use_cases.exceptions import UserNotFound
-from src.core.link.application.use_cases.exceptions import RelatedLinksNotFound
+from src.core.link.application.use_cases.exceptions import RelatedLinksNotFoundForUser
 from src.core.post.application.use_cases.exceptions import InvalidPostData, PostLimitReached
 
 from src.core.room.infra.in_memory_room_repository import InMemoryRoomRepository
@@ -96,7 +96,7 @@ class TestCreatePost:
             links={uuid4()},
             title="My Post"
             )
-        with pytest.raises(RelatedLinksNotFound) as exc_info:
+        with pytest.raises(RelatedLinksNotFoundForUser) as exc_info:
             response = use_case.execute(request)
 
     def test_create_post_with_alredy_existing_post_in_room(self):

@@ -4,7 +4,7 @@ from src.core.post.application.use_cases.create_post import CreatePost
 
 from src.core.room.application.use_cases.exceptions import InvalidRoomData, RoomNotFound
 from src.core.user.application.use_cases.exceptions import UserNotFound
-from src.core.link.application.use_cases.exceptions import RelatedLinksNotFound
+from src.core.link.application.use_cases.exceptions import RelatedLinksNotFoundForUser
 from src.core.post.application.use_cases.exceptions import InvalidPostData, PostLimitReached
 
 from src.core.room.domain.room_repository import RoomRepository
@@ -104,7 +104,7 @@ class TestCreatePost:
             links={uuid4()},
             title="My Post"
             )
-        with pytest.raises(RelatedLinksNotFound) as exc_info:
+        with pytest.raises(RelatedLinksNotFoundForUser) as exc_info:
             response = use_case.execute(request)
 
     def test_create_post_with_alredy_existing_post_in_room(self):
@@ -128,7 +128,7 @@ class TestCreatePost:
         mock_link_repository.list.return_value = []
 
         mock_repository = MagicMock(PostRepository)
-        mock_repository.get_by_user_id.return_value = user
+        mock_repository.validate_if_user_id_has_post_in_room_id.return_value = True
 
         use_case = CreatePost(repository=mock_repository, user_repository=mock_user_repository, link_repository=mock_link_repository, room_repository=mock_room_repository)
         request = CreatePost.Input(
@@ -161,7 +161,7 @@ class TestCreatePost:
         mock_link_repository.list.return_value = []
 
         mock_repository = MagicMock(PostRepository)
-        mock_repository.get_by_user_id.return_value = None
+        mock_repository.validate_if_user_id_has_post_in_room_id.return_value = False
 
         use_case = CreatePost(repository=mock_repository, user_repository=mock_user_repository, link_repository=mock_link_repository, room_repository=mock_room_repository)
         request = CreatePost.Input(

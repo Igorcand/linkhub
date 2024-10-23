@@ -15,11 +15,11 @@ class InMemoryPostRepository(PostRepository):
                 return post
         return None
     
-    def get_by_user_id(self, user_id: UUID) -> Post | None:
+    def validate_if_user_id_has_post_in_room_id(self, user_id: UUID, room_id: UUID) -> Post | None:
         for post in self.posts:
-            if post.user_id == user_id:
-                return post
-        return None
+            if post.user_id == user_id and post.room_id == room_id:
+                return True
+        return False
     
     def list_by_room_id(self, room_id: UUID) -> Post | None:
         posts_by_room = []
@@ -32,12 +32,5 @@ class InMemoryPostRepository(PostRepository):
         post = self.get_by_id(id)
         self.posts.remove(post)
     
-    def update(self, post: Post) -> None:
-        old_post = self.get_by_id(post.id)
-        if old_post:
-            self.posts.remove(old_post)
-            self.posts.append(post)
-    
-    def list(self) -> list[Post]:
-        return [post for post in self.posts]
+
  
