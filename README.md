@@ -1,5 +1,11 @@
 # LINKHUB
 
+## Sobre o projeto
+LinkHub é um projeto desenvolvido para um trabalaho da faculdade para a matéria "Sistemas distribuidos" e foi pensado juntamente com o grupo para ser uma aplicação simples e intuitiva, que facilitasse as pessoas a compartilharem links que consideram importantes ou produtivos 
+
+## Requisitos para o projeto:
+- Python
+
 ## Como rodar o projeto?
 ```bash
 # Cria o ambiente virtual
@@ -22,5 +28,3 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-
-python3 manage.py startapp room_app ./src/django_project/room_app
