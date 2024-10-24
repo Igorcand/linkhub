@@ -26,7 +26,10 @@ from uuid import UUID
 class LinkViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
-    def create(self, request: Request) -> Response:    
+    def create(self, request: Request) -> Response:  
+        '''
+        Cria um novo link
+        '''  
         user_id = request.user.id
         serializer = CreateLinkRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -51,6 +54,9 @@ class LinkViewSet(viewsets.ViewSet):
         )
     
     def list(self, request: Request) -> Response:
+        '''
+        Lista todos os links de um usuário
+        '''
         user_id = request.user.id
         use_case = ListLink(repository=DjangoORMLinkRepository())
         output = use_case.execute(ListLink.Input(user_id=user_id))
@@ -58,6 +64,9 @@ class LinkViewSet(viewsets.ViewSet):
         return Response(status=HTTP_200_OK, data=serializer.data)
     
     def destroy(self,request: Request, pk: UUID=None) -> Response:
+        '''
+        Deleta um link
+        '''
         serializer = DeleteLinkResponseSerializer(data={"id":pk})
         serializer.is_valid(raise_exception=True)
 

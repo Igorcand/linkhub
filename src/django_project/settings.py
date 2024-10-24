@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_extensions',
+    'drf_yasg',
     'src.django_project.auth_app',
     'src.django_project.user_app',
     'src.django_project.room_app',

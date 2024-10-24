@@ -22,7 +22,10 @@ from uuid import UUID
 class RoomViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
-    def create(self, request: Request) -> Response:    
+    def create(self, request: Request) -> Response: 
+        '''
+        Cria uma nova sala
+        '''   
         user_id = request.user.id
         serializer = CreateRoomRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -45,12 +48,18 @@ class RoomViewSet(viewsets.ViewSet):
         )
     
     def list(self, request: Request) -> Response:
+        '''
+        lista todas as salas disponíveis
+        '''
         use_case = ListRoom(repository=DjangoORMRoomRepository())
         output = use_case.execute(ListRoom.Input())
         serializer = ListRoomResponseSerializer(instance=output)
         return Response(status=HTTP_200_OK, data=serializer.data)
     
     def destroy(self,request: Request, pk: UUID=None) -> Response:
+        '''
+        Deleta uma sala
+        '''
         user_id = request.user.id
         serializer = DeleteRoomRequestSerializer(data={"id":pk})
         serializer.is_valid(raise_exception=True)
@@ -69,6 +78,9 @@ class RoomViewSet(viewsets.ViewSet):
         )
 
     def partial_update(self, request, pk: UUID = None) -> Response:
+        '''
+        permite atualizar o nome da sala
+        '''
         serializer = PartialUpdateRoomRequestSerializer(
             data={
                 **request.data, 

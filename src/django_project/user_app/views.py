@@ -39,6 +39,9 @@ class UserViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
     
     def destroy(self,request: Request, pk=None) -> Response:
+        '''
+        Deleta um usuário do banco de dados
+        '''
         serializer = DeleteUserRequestSerializer(data={"id":pk})
         serializer.is_valid(raise_exception=True)
 
@@ -54,6 +57,9 @@ class UserViewSet(viewsets.ViewSet):
         )
 
     def partial_update(self, request, pk: UUID = None) -> Response:
+        '''
+        Permite atualizar o username caso esteja dispoível para uso
+        '''
         serializer = UpdatePartialUserRequestSerializer(
             data={
                 **request.data, 

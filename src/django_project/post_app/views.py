@@ -32,7 +32,10 @@ from uuid import UUID
 class PostViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
-    def create(self, request: Request) -> Response:    
+    def create(self, request: Request) -> Response:  
+        '''
+        Cria um novo post
+        '''  
         user_id = request.user.id
         serializer = CreatePostRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -69,12 +72,18 @@ class PostViewSet(viewsets.ViewSet):
         )
 
     def retrieve(self, request: Request, pk=None) -> Response:
+        '''
+        Retorna todos os post de uma sala
+        '''
         use_case = ListPost(repository=DjangoORMPostRepository())
         output = use_case.execute(ListPost.Input(room_id=pk))
         serializer = ListPostResponseSerializer(instance=output)
         return Response(status=HTTP_200_OK, data=serializer.data)
     
     def destroy(self,request: Request, pk: UUID=None) -> Response:
+        '''
+        Deleta um post
+        '''
         serializer = DeletePostRequestSerializer(data={"id":pk})
         serializer.is_valid(raise_exception=True)
 
@@ -91,6 +100,9 @@ class PostViewSet(viewsets.ViewSet):
         )
 
     def partial_update(self, request, pk: UUID = None) -> Response:
+        '''
+        Permite atualizar o título, corpo e links relacionado ao Post
+        '''
         user_id = request.user.id
         serializer = UpdatePartialPostRequestSerializer(
             data={
