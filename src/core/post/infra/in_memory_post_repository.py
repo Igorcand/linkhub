@@ -32,5 +32,11 @@ class InMemoryPostRepository(PostRepository):
         post = self.get_by_id(id)
         self.posts.remove(post)
     
+    def update(self, post: Post) -> None:
+        old_post = self.get_by_id(post.id)
+        if old_post:
+            self.posts.remove(old_post)
+            self.posts.append(post)
+    
 
  

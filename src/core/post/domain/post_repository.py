@@ -23,4 +23,8 @@ class PostRepository(ABC):
     def delete(self, id: UUID) -> None:
         raise NotImplementedError
 
+    @abstractmethod
+    def update(self, post: Post) -> None:
+        raise NotImplementedError
+
 

@@ -49,7 +49,7 @@ class CreatePost:
         links_ids = {link.id for link in self.link_repository.list(user_id=input.user_id)}
         if not input.links.issubset(links_ids):
             raise RelatedLinksNotFoundForUser(
-                f"Links not found: {input.links - links_ids}"
+                f"Links related for user not found: {input.links - links_ids}"
             )
         
         exist_post = self.repository.validate_if_user_id_has_post_in_room_id(user_id=input.user_id, room_id=input.room_id)

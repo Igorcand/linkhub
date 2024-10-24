@@ -31,12 +31,9 @@ class Post():
     def __repr__(self) -> str:
         return f"Post {self.title} ({self.id})"
 
-    def update_title(self, title):
+    def update_post(self, title: str, body: str, links: set[UUID]):
         self.title = title 
-
-        self.validate()
-    
-    def update_body(self, body):
         self.body = body 
+        self.links = links 
 
         self.validate()
