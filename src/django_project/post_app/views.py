@@ -15,11 +15,13 @@ from src.django_project.link_app.repository import DjangoORMLinkRepository
 from src.django_project.post_app.repository import DjangoORMPostRepository
 
 
-from src.django_project.post_app.serializers import CreatePostRequestSerializer, CreatePostResponseSerializer, DeletePostRequestSerializer, ListPostResponseSerializer
+from src.django_project.post_app.serializers import CreatePostRequestSerializer, CreatePostResponseSerializer, DeletePostRequestSerializer, ListPostResponseSerializer, UpdatePartialPostRequestSerializer
 
 from src.core.post.application.use_cases.create_post import CreatePost
 from src.core.post.application.use_cases.delete_post import DeletePost
 from src.core.post.application.use_cases.list_post import ListPost
+from src.core.post.application.use_cases.update_post import UpdatePost
+
 
 
 
@@ -81,6 +83,30 @@ class PostViewSet(viewsets.ViewSet):
             repository=DjangoORMPostRepository())
         try:
             use_case.execute(input=input)
+        except PostNotFound as err:
+            return Response(data={"error": str(err)}, status=HTTP_404_NOT_FOUND)
+
+        return Response(
+            status=HTTP_204_NO_CONTENT,
+        )
+
+    def partial_update(self, request, pk: UUID = None) -> Response:
+        user_id = request.user.id
+        serializer = UpdatePartialPostRequestSerializer(
+            data={
+                **request.data, 
+                "id":pk
+                }
+            )
+        serializer.is_valid(raise_exception=True)
+
+        
+        input = UpdatePost.Input(**serializer.validated_data, user_id=user_id)
+        use_case = UpdatePost(repository=DjangoORMPostRepository(), link_repository=DjangoORMLinkRepository())
+        try:
+            use_case.execute(request=input)
+        except (InvalidPostData, RelatedLinksNotFoundForUser) as err:
+            return Response(data={"error": str(err)}, status=HTTP_400_BAD_REQUEST)
         except PostNotFound as err:
             return Response(data={"error": str(err)}, status=HTTP_404_NOT_FOUND)
 

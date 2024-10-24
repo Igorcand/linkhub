@@ -29,3 +29,9 @@ class DeletePostRequestSerializer(serializers.Serializer):
 
 class ListPostResponseSerializer(serializers.Serializer):
     data = PostResponseSerializer(many=True)
+
+class UpdatePartialPostRequestSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    title = serializers.CharField(required=False)
+    body = serializers.CharField(required=False)
+    links = SetField(child=serializers.UUIDField(), required=False)

@@ -51,6 +51,20 @@ class DjangoORMPostRepository(PostRepository):
         return [
             PostModelMapper.to_entity(room_model)
             for room_model in self.model.objects.filter(room_id=room_id)]
+    
+    def update(self, post: Post) -> None:
+        try:
+            post_model = PostORM.objects.get(id=post.id)
+        except self.model.DoesNotExist:
+            return None
+        
+        with transaction.atomic():
+            self.model.objects.filter(pk=post.id).update(
+                title=post.title,
+                body=post.body,
+
+            )
+            post_model.links.set(post.links)
 
 class PostModelMapper:
     @staticmethod
