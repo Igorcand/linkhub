@@ -11,23 +11,24 @@ from typing import List, Optional
 from django.db import transaction
 
 class DjangoORMPostRepository(PostRepository):
-    def __init__(self, model: RoomORM | None = None) -> None:
-        self.model = model or RoomORM
+    def __init__(self, model: PostORM | None = None) -> None:
+        self.model = model or PostORM
 
     def create(self, post: Post) -> None: 
-        user = UserORM.objects.get(id=post.user_id) 
-        room = RoomORM.objects.get(id=post.room_id)   
+        with transaction.atomic():
+            user = UserORM.objects.get(id=post.user_id) 
+            room = RoomORM.objects.get(id=post.room_id)   
 
-        post_orm= PostORM(
-            id=post.id,
-            title=post.title,
-            body=post.body,
+            post_orm= PostORM(
+                id=post.id,
+                title=post.title,
+                body=post.body,
 
-            user_id = user,
-            room_id = room,
-            )
-        post_orm.links.set(post.links)
-        post_orm.save()
+                user_id = user,
+                room_id = room,
+                )
+            post_orm.links.set(post.links)
+            post_orm.save()
 
     def get_by_id(self, id: UUID) -> Optional[Post]:
         try:
@@ -54,13 +55,15 @@ class DjangoORMPostRepository(PostRepository):
 class PostModelMapper:
     @staticmethod
     def to_model(post: Post) -> RoomORM:
-        return RoomORM(
+        post =  RoomORM(
             id=post.id,
             title=post.title,
             body=post.body,
             user_id = post.user_id,
             room_id = post.room_id,
         )
+        post.links.set(post.links)
+        return post
     
     def to_entity(post: PostORM) -> Post:
         return Post(
@@ -69,6 +72,7 @@ class PostModelMapper:
             body=post.body,
             user_id = post.user_id.id,
             room_id = post.room_id.id,
+            links={link.id for link in post.links.all()},
         )
     
         

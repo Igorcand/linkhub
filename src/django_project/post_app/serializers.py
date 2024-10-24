@@ -6,7 +6,15 @@ class SetField(serializers.ListField):
     
     def to_representation(self, data):
         return list(super().to_representation(data))
-    
+
+class PostResponseSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    user_id = serializers.UUIDField() 
+    title = serializers.CharField()
+    body = serializers.CharField()
+    links = SetField(child=serializers.UUIDField())
+
+
 class CreatePostRequestSerializer(serializers.Serializer):
     title = serializers.CharField(max_length=255, allow_blank=False)
     body = serializers.CharField(max_length=255, allow_blank=True)
@@ -15,3 +23,9 @@ class CreatePostRequestSerializer(serializers.Serializer):
 
 class CreatePostResponseSerializer(serializers.Serializer):
     id = serializers.UUIDField()
+
+class DeletePostRequestSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+
+class ListPostResponseSerializer(serializers.Serializer):
+    data = PostResponseSerializer(many=True)

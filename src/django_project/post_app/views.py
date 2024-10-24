@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
-from src.core.post.application.use_cases.exceptions import InvalidPostData, PostLimitReached
+from src.core.post.application.use_cases.exceptions import InvalidPostData, PostLimitReached, PostNotFound
 from src.core.user.application.use_cases.exceptions import UserNotFound
 from src.core.room.application.use_cases.exceptions import RoomNotFound
 from src.core.user.application.use_cases.exceptions import UserNotFound
@@ -15,9 +15,13 @@ from src.django_project.link_app.repository import DjangoORMLinkRepository
 from src.django_project.post_app.repository import DjangoORMPostRepository
 
 
-from src.django_project.post_app.serializers import CreatePostRequestSerializer, CreatePostResponseSerializer
+from src.django_project.post_app.serializers import CreatePostRequestSerializer, CreatePostResponseSerializer, DeletePostRequestSerializer, ListPostResponseSerializer
 
 from src.core.post.application.use_cases.create_post import CreatePost
+from src.core.post.application.use_cases.delete_post import DeletePost
+from src.core.post.application.use_cases.list_post import ListPost
+
+
 
 
 from rest_framework.permissions import IsAuthenticated
@@ -52,12 +56,34 @@ class PostViewSet(viewsets.ViewSet):
                 body=body
             )
             output = use_case.execute(input=input)
-        except (RoomNotFound, UserNotFound, RelatedLinksNotFoundForUser) as err:
+        except (RoomNotFound, UserNotFound) as err:
             return Response(data={"error": str(err)}, status=HTTP_404_NOT_FOUND)
-        except (PostLimitReached, InvalidPostData) as err:
-            return Response(data={"error": str(err)}, status=HTTP_404_NOT_FOUND)
+        except (PostLimitReached, InvalidPostData, RelatedLinksNotFoundForUser) as err:
+            return Response(data={"error": str(err)}, status=HTTP_400_BAD_REQUEST)
 
         return Response(
             status=HTTP_201_CREATED,
             data=CreatePostResponseSerializer(instance=output).data
+        )
+
+    def retrieve(self, request: Request, pk=None) -> Response:
+        use_case = ListPost(repository=DjangoORMPostRepository())
+        output = use_case.execute(ListPost.Input(room_id=pk))
+        serializer = ListPostResponseSerializer(instance=output)
+        return Response(status=HTTP_200_OK, data=serializer.data)
+    
+    def destroy(self,request: Request, pk: UUID=None) -> Response:
+        serializer = DeletePostRequestSerializer(data={"id":pk})
+        serializer.is_valid(raise_exception=True)
+
+        input = DeletePost.Input(id=pk)
+        use_case = DeletePost(
+            repository=DjangoORMPostRepository())
+        try:
+            use_case.execute(input=input)
+        except PostNotFound as err:
+            return Response(data={"error": str(err)}, status=HTTP_404_NOT_FOUND)
+
+        return Response(
+            status=HTTP_204_NO_CONTENT,
         )
