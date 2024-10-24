@@ -28,3 +28,6 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+
+## Rotas
+Para visualizar melhor as rotas e funcionalidades você pode instalar o arquivo "Insominia_project.json" no seu programa Insomnia ou acessar a rota http://127.0.0.1:8000/swagger/ para visualizar melhor as funcionalidades
