@@ -32,21 +32,21 @@ class UpdatePost:
 
         current_title = post.title
         current_body = post.body
-        current_links = post.links
-
         if request.title is not None: current_title = request.title
         
         if request.body is not None: current_body = request.body
 
-        if request.links is not None: current_links = request.links
-        
+        print(f'request.links = {request.links}')
+        if request.links is not None: 
+            current_links = request.links
+            links_ids = {link.id for link in self.link_repository.list(user_id=request.user_id)}
+            if not request.links.issubset(links_ids):
+                raise RelatedLinksNotFoundForUser(
+                    f"Links related for user not found: {request.links - links_ids}"
+                )
+        else:
+            current_links = post.links
 
-        links_ids = {link.id for link in self.link_repository.list(user_id=request.user_id)}
-        if not request.links.issubset(links_ids):
-            raise RelatedLinksNotFoundForUser(
-                f"Links related for user not found: {request.links - links_ids}"
-            )
-        
 
         try:
             post.update_post(
