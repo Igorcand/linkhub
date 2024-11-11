@@ -1,25 +1,36 @@
 version: '3.8'
 
 services:
-  api:
-    build: .
-    command: sh ./init.sh
+  linkhub:
+    build:
+      context: . 
+    container_name: linkhub
+    environment:
+      - DEBUG=1
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
     ports:
       - "8000:8000"
-    environment:
-      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME:-admin}
-      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL:-admin@example.com}
-      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD:-admin}
+    depends_on:
+      - db
     volumes:
       - .:/app
-    #depends_on:
-    #  - db
+    entrypoint: ["sh", "-c", "chmod +x /app/init.sh && /app/init.sh"]
 
-  #db:
-  #  image: postgres:13
-  #  environment:
-  #    POSTGRES_DB: your_db_name
-  #    POSTGRES_USER: your_db_user
-  #    POSTGRES_PASSWORD: your_db_password
-  #  ports:
-  #    - "5432:5432"
+  db:
+    image: postgres:15
+    container_name: linkhub-db
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

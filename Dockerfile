@@ -16,12 +16,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar o código do projeto
 COPY . .
 
-# Configuração do Django
-ENV DJANGO_SUPERUSER_USERNAME=admin
-ENV DJANGO_SUPERUSER_EMAIL=admin@admin.com
-ENV DJANGO_SUPERUSER_PASSWORD=admin
+# Garantir que o script init.sh tenha permissão de execução
+RUN chmod +x /app/init.sh
 
 # Expor a porta usada pelo Django
 EXPOSE 8000
+
+# Expor a porta usada pelo Django
+CMD ["/app/init.sh"]
 
 
