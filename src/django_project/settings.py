@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-m4#6pd+*a(&^05x*_9*azxxk%uo3t^96y$jtqmwb68cbr6iz-j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ os.getenv('BACK_URL') ]
 
 
 # Application definition
@@ -82,6 +82,7 @@ AUTH_USER_MODEL = 'user_app.User'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    os.getenv('FRONT_URL'),
 ]
 
 MIDDLEWARE = [
