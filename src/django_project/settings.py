@@ -29,9 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-m4#6pd+*a(&^05x*_9*azxxk%uo3t^96y$jtqmwb68cbr6iz-j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [ os.getenv('BACK_URL') ]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -82,8 +82,12 @@ AUTH_USER_MODEL = 'user_app.User'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    os.getenv('FRONT_URL'),
 ]
+
+# Adiciona FRONT_URL somente se estiver definido e não for None
+front_url = os.getenv('FRONT_URL')
+if front_url:
+    CORS_ALLOWED_ORIGINS.append(front_url)
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
