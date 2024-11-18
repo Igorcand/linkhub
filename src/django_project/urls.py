@@ -27,9 +27,18 @@ from src.django_project.link_app.views import LinkViewSet
 from src.django_project.post_app.views import PostViewSet
 
 from drf_yasg.views import get_schema_view
+from drf_yasg.generators import OpenAPISchemaGenerator
+
 from drf_yasg import openapi
 from rest_framework import permissions
 
+
+class BothHttpAndHttpsSchemaGenerator(OpenAPISchemaGenerator):
+    def get_schema(self, request=None, public=False):
+        schema = super().get_schema(request, public)
+        schema.schemes = ["http", "https"]
+        return schema
+            
 schema_view = get_schema_view(
    openapi.Info(
       title="Sua API",
